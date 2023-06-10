@@ -144,4 +144,27 @@ class UserAddress(BaseModel):
     longitude = db.Column(db.Float)
     
     
+class TodoUser(BaseModel):
+    __tablename__ = 'todo_user'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    email = db.Column(db.String(255), unique=True, nullable=True)
+    phone_number = db.Column(db.String(10), unique=True)
+    is_mobile_verified =db.Column(db.Boolean, default=False)
+    is_email_verified =db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now())
+
+    restaurants = db.relationship('TodoNotes', backref='writer', lazy=True)
     
+class TodoNotes(BaseModel):
+    __tablename__ = 'todo_notes'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('todo_user.id'))
+    note_title = db.Column(db.String(50),nullable=False)
+    note_description = db.Column(db.String(250),nullable=True)
+    status = db.Column(db.Enum('upcoming', 'completed', 'due',name="todo_status"))
+    priority = db.Column(db.Enum('extreme', 'high', 'medium','low',name="todo_priority"))
+    location = db.Column(pg.JSONB())
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now())

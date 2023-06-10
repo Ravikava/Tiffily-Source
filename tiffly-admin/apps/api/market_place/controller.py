@@ -1,6 +1,6 @@
 from flask import request,jsonify
 from apps import db
-from apps.database.models import MenuItem,ReligiousPreference
+from apps.database.models import MenuItem,ReligiousPreference,TodoNotes
 import json
 from apps.helpers.send_otp import send_otp
 from flask_jwt_extended import (
@@ -48,6 +48,38 @@ def get_market_place():
                 'message': 'Todays Menu',
                 'data':todays_menu
             }), 200
+    except Exception as e:
+        print(f"\n\n\n Error {e} \n\n\n")
+        response = jsonify({
+            'status': 'ERROR',
+            'code': 910,
+            'message': f'Error {e}'
+        }), 500
+    return response
+
+
+def todo_user_notes():
+    try:
+        todo_list = db.session.query(TodoNotes).filter(TodoNotes.user_id == 1).all()
+        
+        data = [
+            {
+                'id':i.id,
+                'user_name':i.writer.name,
+                'title':i.note_title,
+                'description':i.note_description,
+                'status':i.status,
+                'priority':i.priority,
+                'location':i.location,
+                'created_at':i.created_at
+            }for i in todo_list
+        ]
+        response = jsonify({
+                    'status': 'SUCCESS',
+                    'code': 200,
+                    'message': 'TO-DO Notes',
+                    'data':data
+                }), 200
     except Exception as e:
         print(f"\n\n\n Error {e} \n\n\n")
         response = jsonify({

@@ -5,5 +5,6 @@ from .models import (
     MenuItem,
     Customer,
     Order,
-    OrderItem,ReligiousPreference,Cuisine
+    OrderItem,ReligiousPreference,Cuisine,
+    TodoNotes
 )
