@@ -168,3 +168,11 @@ class TodoNotes(BaseModel):
     location = db.Column(pg.JSONB())
     created_at = db.Column(db.DateTime, server_default=func.now())
     updated_at = db.Column(db.DateTime, server_default=func.now())
+    
+class TodoCategories(BaseModel):
+    __tablename__ = 'todo_categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+    image_url = db.Column(db.String(255),nullable=True)
+    description = db.Column(db.String(356), nullable=True)
+    

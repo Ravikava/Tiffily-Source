@@ -6,5 +6,5 @@ from .models import (
     Customer,
     Order,
     OrderItem,ReligiousPreference,Cuisine,
-    TodoNotes
+    TodoNotes,TodoCategories
 )

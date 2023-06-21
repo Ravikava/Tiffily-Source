@@ -1,6 +1,6 @@
 from flask import request,jsonify
 from apps import db
-from apps.database.models import MenuItem,ReligiousPreference,TodoNotes
+from apps.database.models import MenuItem,ReligiousPreference,TodoNotes,TodoCategories
 import json
 from apps.helpers.send_otp import send_otp
 from flask_jwt_extended import (
@@ -79,6 +79,35 @@ def todo_user_notes():
                     'code': 200,
                     'message': 'TO-DO Notes',
                     'data':data
+                }), 200
+    except Exception as e:
+        print(f"\n\n\n Error {e} \n\n\n")
+        response = jsonify({
+            'status': 'ERROR',
+            'code': 910,
+            'message': f'Error {e}'
+        }), 500
+    return response
+
+def todo_categories():
+    try:
+        category_list = db.session.query(TodoCategories).all()
+        
+        data = [
+            {
+                'name':i.name,
+                'image_url':i.image_url,
+                'description':i.description,
+                
+            }for i in category_list
+        ]
+        response = jsonify({
+                    'status': 'SUCCESS',
+                    'code': 200,
+                    'message': 'Categories List',
+                    'data':{
+                        'categories':data
+                    }
                 }), 200
     except Exception as e:
         print(f"\n\n\n Error {e} \n\n\n")
